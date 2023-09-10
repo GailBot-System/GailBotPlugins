@@ -1,0 +1,74 @@
+suite_name = "HiLabSuite"
+
+[metadata]
+Author = "hilab"
+Email = "hilab.tufts.edu"
+Version = "v.0.1a"
+
+[[plugins]]
+plugin_name = "OutputFileManager"
+dependencies = []
+rel_path = "src/format/output_file_manager.py"
+module_name = "output_file_manager"
+
+[[plugins]]
+# Each of SyllableRate, Gap, Pause, and Overlap depend on the previous
+# This is because as the dictionary of utterances and markers is built, the
+# dictionary is expanded with each added marker or change with each 
+# reorganization. There is no way for these 4 plugins to run in parallel as 
+# they all alter the same data structure and, thus, cannot all be merged
+# at the end.
+plugin_name = "SyllableRatePlugin"
+dependencies = [ "OutputFileManager",]
+rel_path = "src/algorithms/syllab_rate.py"
+module_name = "syllab_rate"
+
+[[plugins]]
+plugin_name = "GapPlugin"
+dependencies = [ "OutputFileManager", "SyllableRatePlugin",]
+rel_path = "src/algorithms/gap.py"
+module_name = "gap"
+
+[[plugins]]
+plugin_name = "PausePlugin"
+dependencies = [ "OutputFileManager", "SyllableRatePlugin", "GapPlugin",]
+rel_path = "src/algorithms/pause.py"
+module_name = "pause"
+
+[[plugins]]
+plugin_name = "OverlapPlugin"
+dependencies = [ "OutputFileManager", "SyllableRatePlugin", "GapPlugin", "PausePlugin",]
+rel_path = "src/algorithms/overlap.py"
+module_name = "overlap"
+
+[[plugins]]
+# Relies on all of the previous plugins to be run in order to work
+# However, each of the CSV, Text, and Xml outputs can run simultaneously or at
+# any time
+plugin_name = "CSVPlugin"
+dependencies = [ "OutputFileManager", "SyllableRatePlugin", "GapPlugin", "PausePlugin", "OverlapPlugin",]
+rel_path = "src/format/csv.py"
+module_name = "csv"
+
+[[plugins]]
+plugin_name = "TextPlugin"
+dependencies = [ "OutputFileManager", "SyllableRatePlugin", "GapPlugin", "PausePlugin", "OverlapPlugin",]
+rel_path = "src/format/text.py"
+module_name = "text"
+
+[[plugins]]
+plugin_name = "XmlPlugin"
+dependencies = [ "OutputFileManager", "SyllableRatePlugin", "GapPlugin", "PausePlugin", "OverlapPlugin",]
+rel_path = "src/format/xml.py"
+module_name = "xml"
+
+[[plugins]]
+plugin_name = "ChatPlugin"
+# The creation of a CHAT output is dependent on the XML output
+dependencies = [ "OutputFileManager", "SyllableRatePlugin", "GapPlugin", "PausePlugin", "OverlapPlugin", "XmlPlugin",]
+rel_path = "src/format/chat.py"
+module_name = "chat"
+
+
+
+

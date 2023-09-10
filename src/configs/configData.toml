@@ -1,0 +1,109 @@
+[FORMATTER.CSV]
+#The hardcoded formatting for CSV output
+HEADER = ["SPEAKER LABEL", "TEXT", "START TIME", "END TIME"]
+                                    #List of possible headers
+TXT_SEP = " "                       #Used as a separator between utterances
+
+[FORMATTER.TEXT]
+#The hardcoded formatting for TEXT output
+GAPS = "<GAP:Duration="
+PAUSES = "<PAUSE:Duration="
+OVERLAP_FIRST_START = "<OVERLAP:order_id=1&type=start&overlap_id="
+OVERLAP_FIRST_END = "<OVERLAP:order_id=1&type=end&overlap_id="
+OVERLAP_SECOND_START = "<OVERLAP:order_id=2&type=start&overlap_id="
+OVERLAP_SECOND_END = "<OVERLAP:order_id=2&type=end&overlap_id="
+SLOWSPEECH_START = "<SLOWSPEECH:type=start> "
+SLOWSPEECH_END = "<SLOWSPEECH:type=end> "
+FASTSPEECH_START = "<FASTSPEECH:type=start> "
+FASTSPEECH_END = "<FASTSPEECH:type=end> "
+PAUSES_CAPS = "PAUSES"
+GAPS_CAPS = "GAPS"
+LATCH_START = "<LATCH:type=start&Duration="
+LATCH_END = "<LATCH:type=end&id="
+SELF_LATCH_START = "<SELF_LATCH:type=start&Duration="
+SELF_LATCH_END = "<SELF_LATCH:type=end"
+MICROPAUSE = "MICROPAUSE:Duration="
+
+TURN = "{0}\t{1} {2}{4}_{3}{4}\n"   
+TXT_SEP = " "                       #Used as a separator between utterances
+
+[FORMATTER.INTERNAL]
+# Class for an internal marker node. Contains appropriate attributes for gap,
+# overlap, pause, and syllable rate markers.
+GAPS = "gaps"
+OVERLAPS = "overlaps"
+PAUSES = "pauses"
+FTO = "fto"
+MICROPAUSE = "micropause"
+NO_SPEAKER = " "
+LATCH_START = "latch_start"
+LATCH_END = "latch_end"
+SELF_LATCH_START = "self_latch_start"
+SELF_LATCH_END = "self_latch_end"
+
+# Marker text
+MARKERTYPE = "markerType"
+MARKERINFO = "markerInfo"
+MARKERSPEAKER = "markerSpeaker"
+MARKER_SEP = ":"
+KEYVALUE_SEP = "="
+TYPE_INFO_SP = "(markerType={0}:markerInfo={1}:markerSpeaker={2})"
+OVERLAP_FIRST_START = "overlap-firstStart"
+OVERLAP_FIRST_END = "overlap-firstEnd"
+OVERLAP_SECOND_START = "overlap-secondStart"
+OVERLAP_SECOND_END = "overlap-secondEnd"
+
+SLOWSPEECH_DELIM = "\u2207"             #Special character for slowspeech
+FASTSPEECH_DELIM = "\u2206"             #Special character for slowspeech
+LATCH_DELIM = "\u2248"                  #Special character for latch
+SLOWSPEECH_START = "slowspeech_start"
+SLOWSPEECH_END = "slowspeech_end"
+FASTSPEECH_START = "fastspeech_start"
+FASTSPEECH_END = "fastspeech_end"
+DELIM_MARKER1 = "."
+DELIM_MARKER2 = "%"
+
+FRAGMENT_LIST = ["eh", "er", "ew", "hm", "mm", "uh", "uhm", "um"]
+TITLE_LIST = ["Mr", "Dr", "Ms", "Mrs", "St"]
+TITLE_LIST_FULL = ["Mister", "Doctor", "Miss", "Missus", "Saint"]
+
+UTT_PAUSE_MARKERS = ["%HESITATION"]     #Treated as a list
+
+[EXCEPTIONS]
+HESITATION = "%HESITATION"
+
+# Minimum thresholds for overlaps, pauses, and gaps.
+[THRESHOLD.GAPS]
+GAPS_LB = 1.0   #The minimum time required for a gap to be measured, 0.1 seconds
+                #Anything less than that does not qualify to be a gap
+TURN_END_THRESHOLD_SECS = 1.0   #The threshold to end a turn, 0.3 seconds
+                                #If 1.0 seconds pass without any utterances,
+                                #a new turn is initiated
+
+LB_LATCH = 0.01                 #A latch is between 0.01 and 0.1 seconds of 
+UB_LATCH = 0.09                 #silence within a speaker's turn
+
+[THRESHOLD.OVERLAPS]
+OVERLAP_MARKERLIMIT = 4.0       #The maximum amount of overlap markers
+
+[THRESHOLD.PAUSES]
+LB_MICROPAUSE = 0.1             #A micropause is between 0.1 and 0.2 seconds
+UB_MICROPAUSE = 0.2
+LB_PAUSE = 0.2                  #A pause is between 0.2 and 1.0 seconds
+UB_PAUSE = 1.0 # This is blah.
+LB_LARGE_PAUSE = 1.0            #If a pause exceeds 1.0 seconds in length, it
+                                #is treated as a special case
+
+[THRESHOLD.SYLLABLE]
+#The hardcoded values for the Syllable Rate plugin specifically
+LIMIT_DEVIATIONS = 2    #Maximum deviations between two
+
+[OUTPUT_FILE]
+#The names for the various output files
+CHAT = "conversation.cha"
+NATIVE_XML = "conversation.talkbank.xml"
+WORD_CSV = "words.csv"
+UTT_CSV = "conversation.csv"
+CON_TXT = "conversation.txt"
+CHAT_ERROR = "chat_error.txt"
+FORMAT_MD = "format.md"
