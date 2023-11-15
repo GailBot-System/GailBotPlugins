@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: Hannah Shader, Jason Wu, Jacob Boyar
 # @Date:   2023-06-26 12:15:56
-# @Last Modified by:   Jacob Boyar
-# @Last Modified time: 2023-08-08 11:49:57
+# @Last Modified by:   Hannah Shader
+# @Last Modified time: 2023-08-08 14:47:00
 # @Description: Creates a marker utterance dictionary
 
 import copy
@@ -709,7 +709,7 @@ class MarkerUtteranceDict:
         -------
         none
         """
-        
+
         # Find the correct index to insert
         insert_index = None
         for index in range(len(self.list)):
@@ -915,8 +915,6 @@ class MarkerUtteranceDict:
         -------
         None.
         """
-        curr_flexible_info = 0
-        got_to_marker = False
         for counter, item in enumerate(self.list):
             if item.start == item.end:
                 pass
@@ -937,8 +935,9 @@ class MarkerUtteranceDict:
 
     def remove_empty_overlaps(self) -> None:
         """
-        Removes empty , where an overlap surrounds no utterances.
-        
+        Removes empty overlap markers, where an overlap surrounds no
+        utterances.
+
         Parameters
         ----------
         None.
@@ -953,7 +952,7 @@ class MarkerUtteranceDict:
         invalid_ids = []
 
         # create a new version of self.list that includes all "valid"
-        # list item
+        # list items
         # a list item is valid if it isn't an overlap marker with nothing
         # in-between it
         new_list = []
@@ -1000,10 +999,10 @@ class MarkerUtteranceDict:
                 new_list.append(item)
 
         self.list = new_list
-        
+
     def add_self_latch(self, func) -> None:
         """
-        If someone is found talking immediately after an overlap, creates a 
+        If someone is found talking immediately after an overlap, creates a
         self latch
 
         1. Identify the overlap start
@@ -1011,7 +1010,7 @@ class MarkerUtteranceDict:
         3. Identify the word from the overlapping speaker before the overlap end
         4. Compare timing to see if self latch criteria is met
         5. If so, insert a latch, therefore, a new turn for each
-        
+
         Parameters
         ----------
         None.
