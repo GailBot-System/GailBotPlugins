@@ -1,0 +1,16 @@
+[package]
+name = "gap"
+id = "3"
+version = "[insert version here]"
+description = "[insert description here]"
+authors = ["Example Person <example.person@gmail.com>"]
+
+[requirements]
+# list of plugin names with ids. DO NOT REMOVE HOST
+host = "0"
+output = "1"
+syllRate = "2"
+
+
+[dependencies]
+# list of python dependencies with versions
