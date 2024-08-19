@@ -1,0 +1,37 @@
+Plugin Boilerplate:
+
+Transmition:
+    Data between plugins is transfered via linux sockets. As docker-compose will
+    create it's own local network, we are able to quickly transfer data between 
+    different containers. Each docker-compose will be automatically given a "host"
+    plugin that will act as the orchestrator of all plugins. It will recieve the
+    DAG of all plugins and will create a thread for each socket connect between
+    host and plugin. 
+    
+    First 4 bytes on each line will contain the ID of the current plugin that 
+    the host is communicating with. This allows us to identify what sockets 
+    are allocated to each plugin.
+
+    As it accepts new connections it will continously attempt to match for the First
+    element of the DAG. Once found it will start the process by supplying it with
+    the transcription data
+
+    From there we will use the following transfer format:
+
+Payloads: 
+    Payloads will consist of the following
+    ID              - 4 bytes
+    Size of payload - 16 bytes
+    Payload         - size_of_payload bytes
+
+    following this we will ensure that we can match each payload is read and
+    transfer to the correct plugin container
+
+Transfering data:
+    Once the payload has been recieved, host will determine use the recieved
+    ID to determine the next plugin in the DAG. Once the ID has been computed
+    it will send the same payload format to the next plugin
+
+Invarients:
+    If a plugin recieves a payload with anything other than it's own ID it 
+    will exit
