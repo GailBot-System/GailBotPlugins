@@ -1,5 +1,3 @@
 # GailBotPlugins
 
-These are some helpful data structures that allow you to easily interact with
-a transcription, providing functions to insert and remove markers, as well as
-to provide user-made apply functions for indicidual utterances.
+This is a command-line tool for management of GailBot plugins (creating, uploading, and downloading plugins and plugin suites).
