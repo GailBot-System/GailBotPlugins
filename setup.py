@@ -10,6 +10,11 @@ setup(
     long_description_content_type='text/markdown', 
     url='https://github.com/GailBot-System/GailBotPlugins',  
     packages=find_packages(),  
+    entry_points={
+        'console_scripts': [
+            'gailbotplugins=gailbotplugins.app:main',
+        ],
+    },
     include_package_data=True,  # Include additional files specified in MANIFEST.in
     classifiers=[
         'Programming Language :: Python :: 3',
