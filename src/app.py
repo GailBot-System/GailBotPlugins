@@ -21,6 +21,8 @@ def main():
 
     while True:
         query = input().lower().strip()
+        query_split = query.split()
+        length_query = len(query_split)
 
         if query == 'quit':
             print("Exiting...")
@@ -35,12 +37,17 @@ def main():
     - create_suite: initiates the creation of a plugin suite
     - add [ID Number]: adds plugin with respective ID to the suite
     - remove [ID Number]: removes plugin with respective ID from the suite
-    - print: prints plugins that have been added to the suite so far
-    - finalize: ensures that the suite is valid and finalizes it '''
+    - finalize: ensures that the suite is valid and finalizes it 
+    - create_plugin: creates a templated plugin on your Desktop
+    - upload_plugin [path to folder]: uploads a plugin to the S3 Bucket (WILL REMOVE - EXCLUSIVE UPLOADING FROM WEBSITE)
+    - upload_plugin_suite [path to folder]
+    - download_plugin [ID] [destination path]
+    - download_plugin_suite [ID] [destination path]'''
             print(cmd_options)
         elif query == 'create_plugin':
             name = input("Please provide a unique name for your new plugin: ")
-            new_plugin = pluginCreator(name= name)
+            desc = input("Please describe what your plugin will accomplish: ")
+            new_plugin = pluginCreator(name= name, description= desc)
             print(f"Done! Here is the path to the new folder with all the starter files you need to create your plugin: {new_plugin.parent_dir}!")
         elif query_split[0] == 'upload_plugin' and len(query_split) == 2:
             plugin_folder = query_split[1]
@@ -64,7 +71,7 @@ def suite_creation(ps: PluginSuiteTool):
     """
     Queries user for commands for suite creation (add, remove, validate, etc.)
     """
-    print(f"Plugin Suite {ps.name} created! Start adding plugins to your suite and enter 'finalize_suite' once all plugins have been added.")
+    print(f"Plugin Suite {ps.name} created! Start adding plugins to your suite (by typing 'add [ID]') and enter 'finalize' once all plugins have been added. Enter 'print' to see the plugins that have bbeen added. To remove, type 'remove [ID]'.")
     while True:
         query = input().lower().strip()
         query_split = query.split()

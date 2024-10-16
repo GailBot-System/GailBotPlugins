@@ -3,9 +3,12 @@ from WorkspaceManager.ws_funcs import is_directory
 
 
 class pluginCreator():
-    def __init__(self, name: str):
+    def __init__(self, name: str, description: str):
         self.name = name
-        self.id = 0 # <- create unique id here unless we want to add it in the toml when adding to s3
+        self.description = description
+        # TODO: use hash to create id using name, description, and database amt of plugins
+        self.id = 0 
+
         self.desktop = self.get_desktop_path()
         self.parent_dir = os.path.join(self.desktop, self.name)
         if not is_directory(self.parent_dir):

@@ -123,7 +123,7 @@ class WorkspaceManager:
         except Exception as e:
             return False
         
-    #todo: attach to backend
+    #todo: when creating suite, should not be copying code, only docker files, docker compose, info toml
     def _retrieve_and_store_plugin(self, id: str, path: str):
         make_dir(path)
         if (id == "0"):
