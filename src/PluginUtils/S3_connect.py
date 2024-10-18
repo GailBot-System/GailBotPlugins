@@ -7,8 +7,8 @@ import toml
 
 class S3Client:
     def __init__(self):
-        access_key = "AKIA2J56H6CDIH4K22WK"
-        secret_key = "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"
+        access_key = "AKIA2J56H6CDDQ64UTP6"
+        secret_key = "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"
         self.s3_client = boto3.client(
             "s3", aws_access_key_id=access_key, aws_secret_access_key=secret_key
         )
@@ -158,3 +158,17 @@ class S3Client:
             print(f"File not found error: {e}")
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
+
+
+    def download_plugin_conf(self, bucket, plugin_key, is_suite=False):
+        try:
+            s3_key = f"plugins/{plugin_key}plugin_info.toml"
+            print("s3_key: " + s3_key)
+            obj = self.s3_client.get_object(Bucket=bucket, Key=s3_key)
+            contents = obj['Body'].read().decode('utf-8')
+            print(f"Downloaded {s3_key} from S3.")
+            return contents
+        except NoCredentialsError:
+            print("Credentials not available")
+        except ClientError as e:
+            print(f"Client error: {e}")

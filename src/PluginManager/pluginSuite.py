@@ -5,6 +5,8 @@ import yaml
 from PluginManager.plugin import Plugin
 from typing import List
 from graphlib import TopologicalSorter
+from PluginUtils.S3_connect import S3Client
+from PluginUtils.RDS_connect import RDSClient
 
 from WorkspaceManager.manager import WorkspaceManager
 
@@ -61,24 +63,21 @@ class PluginSuiteTool:
         Returns:
             String containing file info
         """
-        # TODO check whether ID is valid from database
-        
-        
-        if id == HOST:
-            file_path = f"/Users/{USER}/Desktop/GailBot/GailBotTools/src/playground/test/plugin_info.toml"
-            with open(file_path, 'r') as file:
-                file_contents = file.read()
-        elif id == "1":
-            file_path = f"/Users/{USER}/Desktop/GailBot/GailBotTools/src/playground/test_plugin_one/plugin_info.toml"
-            with open(file_path, 'r') as file:
-                file_contents = file.read()
-        elif id == "2":
-            file_path = f"/Users/{USER}/Desktop/GailBot/GailBotTools/src/playground/test_plugin_two/plugin_info.toml"
-            with open(file_path, 'r') as file:
-                file_contents = file.read()
-        
-        return file_contents
 
+        # get s3_url from RDS
+        rds_client = RDSClient()
+        rds_client.connect()
+        s3_url = rds_client.fetch_plugin_s3_url(id)
+        rds_client.close_connection()
+
+        # use s3_url to get plugin toml file
+        base_url = "https://gailbot-plugins.s3.us-east-2.amazonaws.com/plugins/"
+        bucket = "gailbot-plugins"
+        key = s3_url.replace(base_url, "")
+
+        s3_client = S3Client()
+        return s3_client.download_plugin_conf(bucket, key)
+        
     def remove_plugin(self, id: str) -> None:
         """
         Removed plugin from plugin suite
