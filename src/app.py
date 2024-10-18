@@ -20,7 +20,8 @@ def main():
     s3_client = S3Client()
 
     while True:
-        query = input().lower().strip()
+        # query = input().lower().strip()
+        query = input()
         query_split = query.split()
         length_query = len(query_split)
 
@@ -73,7 +74,8 @@ def suite_creation(ps: PluginSuiteTool):
     """
     print(f"Plugin Suite {ps.name} created! Start adding plugins to your suite (by typing 'add [ID]') and enter 'finalize' once all plugins have been added. Enter 'print' to see the plugins that have bbeen added. To remove, type 'remove [ID]'.")
     while True:
-        query = input().lower().strip()
+        # query = input().lower().strip()
+        query = input()
         query_split = query.split()
         length_query = len(query_split)
 

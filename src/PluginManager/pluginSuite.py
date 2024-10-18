@@ -213,10 +213,16 @@ class PluginSuiteTool:
         """
         services = {}
         
-        # TODO transfer to workspace manager
-        plugin_folder = f"/Users/{USER}/GailBot/gailbot_workspace/gailbot_data/plugin_source/suites/{self.name}/plugins"
-        docker_folder = f"/Users/{USER}/GailBot/gailbot_workspace/gailbot_data/plugin_source/suites/{self.name}/docker"        
+        # TODO transfer to workspace manager. plugins will no longer be stored 
+        # here from suite creation. plugins will be empty, but will be filled j 
+        # before trsndcription takes place in the API
         
+        # plugin_folder = f"/Users/{USER}/GailBot/gailbot_workspace/gailbot_data/plugin_source/suites/{self.name}/plugins"
+        # docker_folder = f"/Users/{USER}/GailBot/gailbot_workspace/gailbot_data/plugin_source/suites/{self.name}/docker"        
+
+        plugin_folder = os.path.join(workspace.ps_path, self.name, "plugins")
+        docker_folder = os.path.join(workspace.ps_path, self.name, "docker")
+
         for i, plugin_id in enumerate(order):
             services[f'plugin_{plugin_id}'] = {
                 # building docker images from docker files automatically

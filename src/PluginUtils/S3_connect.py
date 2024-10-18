@@ -43,26 +43,40 @@ class S3Client:
             print(e.response)
 
     def upload_folder(self, folder, bucket, folder_type):
+        print("going to upload. flder : ", folder)
         try:
             plugin_id = None
-            for file_name in os.listdir(folder):
-                file_path = os.path.join(folder, file_name)
-                if file_name.endswith(".toml"):
-                    plugin_info = self.extract_plugin_info(file_path)
-                    if plugin_info:
-                        plugin_id = plugin_info["id"]
+            print("Checking if folder exists:", os.path.exists("/Users/evacaro/Desktop/uniquenameforplugin"))
 
-                if plugin_id:
-                    s3_key = f"{folder_type}/{plugin_id}/{file_name}"
+            # Recursively walk through all files and folders
+            for root, _, files in os.walk(folder):
+                print("files:", files)
+                for file_name in files:
+                    file_path = os.path.join(root, file_name)
+                    print("filepath is ", file_path)
+
+                    # Check for plugin ID in any ".toml" file
+                    if file_name.endswith(".toml"):
+                        plugin_info = self.extract_plugin_info(file_path)
+                        if plugin_info:
+                            plugin_id = plugin_info["id"]
+
+                        if not plugin_id:
+                            print("Plugin ID not found in TOML file. Aborting upload.")
+                            return
+
+                    # Generate the S3 key while preserving the directory structure
+                    relative_path = os.path.relpath(file_path, folder)
+                    s3_key = f"{folder_type}/{plugin_id}/{relative_path}"
+
+                    # Upload the file to S3
+                    print(f"Uploading {file_path} to {bucket}/{s3_key}...")
                     self.s3_client.upload_file(file_path, bucket, s3_key)
-                    print(f"File {file_path} uploaded to {bucket}/{s3_key}")
-                else:
-                    print("Plugin ID not found in TOML file. Aborting upload.")
-                    return
+
         except FileNotFoundError:
-            print(f"The file was not found")
+            print(f"The file was not found: {file_path}")
         except NoCredentialsError:
-            print("Credentials not available")
+            print("AWS credentials not available")
         except ClientError as e:
             print(f"Client error: {e}")
             print(e.response)
@@ -80,12 +94,19 @@ class S3Client:
                         "access": config["suite"].get("access", "ANY"),
                     }
                 else:
+                    # item_info = {
+                    #     "id": config["plugin"]["id"],
+                    #     "name": config["plugin"]["name"],
+                    #     "description": config["plugin"].get("description", ""),
+                    #     "created_by": config["plugin"]["created_by"],
+                    #     "access": config["plugin"].get("access", "ANY"),
+                    # }
                     item_info = {
-                        "id": config["plugin"]["id"],
-                        "name": config["plugin"]["name"],
-                        "description": config["plugin"].get("description", ""),
-                        "created_by": config["plugin"]["created_by"],
-                        "access": config["plugin"].get("access", "ANY"),
+                        "id": config.get("package", {}).get("id"),
+                        "name": config.get("package", {}).get("name"),
+                        "description": config.get("package", {}).get("description"),
+                        # "created_by": config.get("package", {}).get("authors"),
+                        # "access": config.get("package", {}).get("access"),
                     }
                 return item_info
         except FileNotFoundError:
