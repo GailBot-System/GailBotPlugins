@@ -1,11 +1,14 @@
 import os
 from WorkspaceManager.ws_funcs import is_directory
+import hashlib
 
 
 class pluginCreator():
     def __init__(self, name: str):
         self.name = name
-        self.id = 0 # <- create unique id here unless we want to add it in the toml when adding to s3
+        self.id = 0 # this will be overwritten when uploading to the website
+        self.version = 1.0
+        
         self.desktop = self.get_desktop_path()
         self.parent_dir = os.path.join(self.desktop, self.name)
         if not is_directory(self.parent_dir):
@@ -14,6 +17,7 @@ class pluginCreator():
         if not is_directory(self.src_dir):
             os.makedirs(self.src_dir)
         self.add_files()
+
 
     def get_desktop_path(self):
         """Returns the path to the user's Desktop directory."""
@@ -69,12 +73,11 @@ if __name__ == "__main__":
         return """README"""
     
     def get_toml_text(self):
-        return f"""[package]
-name = "{self.name}"
+        return f"""[plugin]
+name = "{self.name}" 
 id = "{self.id}"
-version = "[insert version here]"
+version = "{self.version}"
 description = "[insert description here]"
-authors = ["Example Person <example.person@gmail.com>"]
 
 [requirements]
 # list of plugin names with ids. DO NOT REMOVE HOST

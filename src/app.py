@@ -32,6 +32,7 @@ def main():
         elif query == 'help':
             cmd_options = '''Command options:
     - quit: exits the program
+    - create_plugin: creates a new plugin
     - create_suite: initiates the creation of a plugin suite
     - add [ID Number]: adds plugin with respective ID to the suite
     - remove [ID Number]: removes plugin with respective ID from the suite
