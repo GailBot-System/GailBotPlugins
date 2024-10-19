@@ -43,10 +43,10 @@ class S3Client:
             print(e.response)
 
     def upload_folder(self, folder, bucket, folder_type):
-        print("going to upload. flder : ", folder)
+        # print("going to upload. flder : ", folder)
         try:
             plugin_id = None
-            print("Checking if folder exists:", os.path.exists("/Users/evacaro/Desktop/uniquenameforplugin"))
+            # print("Checking if folder exists:", os.path.exists("/Users/evacaro/Desktop/uniquenameforplugin"))
 
             # Recursively walk through all files and folders
             for root, _, files in os.walk(folder):

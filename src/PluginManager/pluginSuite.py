@@ -9,7 +9,7 @@ from graphlib import TopologicalSorter
 from WorkspaceManager.manager import WorkspaceManager
 
 # USER = "danbergen"
-USER = "sophieclemens"
+USER = "evacaro"
 HOST = "0"
 
 class PluginSuiteTool:
@@ -76,7 +76,15 @@ class PluginSuiteTool:
             file_path = f"/Users/{USER}/Desktop/GailBot/GailBotTools/src/playground/test_plugin_two/plugin_info.toml"
             with open(file_path, 'r') as file:
                 file_contents = file.read()
-        
+        elif id == "123456":
+            file_path = f"/Users/{USER}/Desktop/uniquenameforplugin/plugin_info.toml"
+            with open(file_path, 'r') as file:
+                file_contents = file.read()
+        elif id == "1234567":
+            file_path = f"/Users/{USER}/Desktop/plugin2/plugin_info.toml"
+            with open(file_path, 'r') as file:
+                file_contents = file.read()
+
         return file_contents
 
     def remove_plugin(self, id: str) -> None:

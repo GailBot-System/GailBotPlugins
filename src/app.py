@@ -61,6 +61,7 @@ def main():
             destination_folder = query_split[2]
             s3_client.download_file('gailbot-plugins', plugin_id, destination_folder)
         elif query_split[0] == 'download_plugin_suite' and len(query_split) == 3:
+            # instead of downloading the files, should only download the docker files, compose, and toml
             suite_id = query_split[1]
             destination_folder = query_split[2]
             s3_client.download_file('gailbot-plugins', suite_id, destination_folder, is_suite=True)
