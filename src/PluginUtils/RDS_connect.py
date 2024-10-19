@@ -17,8 +17,8 @@ class RDSClient:
                 password=self.password,
                 database=self.database
             )
-            if self.connection.is_connected():
-                print("Connected to RDS database")
+            # if self.connection.is_connected():
+            #     print("Connected to RDS database")
 
         except Error as e:
             print(f"Error connecting to RDS: {e}")
@@ -49,4 +49,4 @@ class RDSClient:
     def close_connection(self):
         if self.connection.is_connected():
             self.connection.close()
-            print("RDS connection closed")
+            # print("RDS connection closed")

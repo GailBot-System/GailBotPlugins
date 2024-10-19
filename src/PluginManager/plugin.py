@@ -37,11 +37,15 @@ class Plugin:
                 Path to the toml file that contains the necessary information to populate the plugin attributes
         """
         # TODO: check formatting in toml file
-        
+        print("yay")
         self._info_dict = toml.loads(toml_file)
-        self.id = self._info_dict["package"]["id"]
+        print("1")
+        self.id = self._info_dict["plugin"]["id"]
+        print("2")
         self.dependencies = self._info_dict["dependencies"]
+        print("3")
         self.requirements = self._info_dict["requirements"]
+        print(self.requirements)
 
     def _unzip(self, file):
         unzipped_dir = os.path.splitext(file)[0]

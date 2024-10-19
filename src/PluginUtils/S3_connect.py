@@ -76,16 +76,15 @@ class S3Client:
                         "id": config["suite"]["id"],
                         "name": config["suite"]["name"],
                         "description": config["suite"].get("description", ""),
-                        "created_by": config["suite"]["created_by"],
-                        "access": config["suite"].get("access", "ANY"),
+                        "version": config["suite"]["version"],
+                        "plugins_list": config["suite"].get("plugins", [])
                     }
                 else:
                     item_info = {
                         "id": config["plugin"]["id"],
                         "name": config["plugin"]["name"],
                         "description": config["plugin"].get("description", ""),
-                        "created_by": config["plugin"]["created_by"],
-                        "access": config["plugin"].get("access", "ANY"),
+                        "version": config["plugin"].get("version", ""),
                     }
                 return item_info
         except FileNotFoundError:
@@ -163,10 +162,10 @@ class S3Client:
     def download_plugin_conf(self, bucket, plugin_key, is_suite=False):
         try:
             s3_key = f"plugins/{plugin_key}plugin_info.toml"
-            print("s3_key: " + s3_key)
+            # print("s3_key: " + s3_key)
             obj = self.s3_client.get_object(Bucket=bucket, Key=s3_key)
             contents = obj['Body'].read().decode('utf-8')
-            print(f"Downloaded {s3_key} from S3.")
+            # print(f"Downloaded {s3_key} from S3.")
             return contents
         except NoCredentialsError:
             print("Credentials not available")

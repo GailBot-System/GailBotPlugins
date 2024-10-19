@@ -39,6 +39,8 @@ class PluginSuiteTool:
         id : str
             Corresponding ID of zipped file
         """
+        if (id == '0'):
+            return
         try:
             # TODO: when implementing API calls when host is retrieved pull from local copy rather than API
             plugin_conf_file = self._retrieve_plugin_conf(id)
@@ -86,7 +88,9 @@ class PluginSuiteTool:
         id : str
             Corresponding ID of zipped file
         """
-        # TODO ensure they cannot remove host plugin
+        if id == '0':
+            print("Cannot remove HOST Plugin")
+            return
         if id in self.plugin_list:
             del self.plugin_list[id]
 
@@ -102,7 +106,6 @@ class PluginSuiteTool:
         """
         Print all the IDs for the currently added plugins
         """
-        
         print('\n'.join(f"{key}" for key, __ in self.plugin_list.items()))
 
 
@@ -128,7 +131,7 @@ class PluginSuiteTool:
                     self.not_included.append(req_id)
         if len(self.not_included) > 0:
             return False
-        return True 
+        return True
 
     def finalize(self):
         """

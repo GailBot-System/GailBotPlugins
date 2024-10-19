@@ -21,6 +21,7 @@ def main():
 
     while True:
         query = input().lower().strip()
+        query_split = query.split()
 
         if query == 'quit':
             print("Exiting...")
@@ -76,6 +77,7 @@ def suite_creation(ps: PluginSuiteTool):
                 id = input("Please provide the ID number of the plugin you wish to add: ")
             else:
                 id = query_split[1]
+                print(id)
             try:
                 ps.add_plugin(id)
                 # s3_client.download_file(bucket= "gailbot-plugins", plugin_id= id, destination_folder= )
@@ -105,6 +107,17 @@ def suite_creation(ps: PluginSuiteTool):
                 ps.remove_plugin(id)
             except Exception as e:
                 print(f"Couldn't remove plugin {id}. ")
+        elif query == 'help':
+            cmd_options = '''Suite creation commands:
+                - quit: exits suite creation
+                - add [ID Number]: adds plugin with respective ID to the suite
+                - remove [ID Number]: removes plugin with respective ID from the suite
+                - print: prints plugins that have been added to the suite so far
+                - finalize: ensures that the suite is valid and finalizes it '''
+            print(cmd_options)
+        elif query == 'quit':
+            print("Exiting...")
+            return
         else:
             print(f"{query} is not a valid command. Enter 'help' to see the list of acceptable commands. ")
 

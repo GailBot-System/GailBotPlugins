@@ -7,7 +7,7 @@ class pluginCreator():
     def __init__(self, name: str):
         self.name = name
         self.id = 0 # this will be overwritten when uploading to the website
-        self.version = 1.0
+        self.version = "1.0"
         
         self.desktop = self.get_desktop_path()
         self.parent_dir = os.path.join(self.desktop, self.name)
@@ -76,8 +76,8 @@ if __name__ == "__main__":
         return f"""[plugin]
 name = "{self.name}" 
 id = "{self.id}"
-version = "{self.version}"
 description = "[insert description here]"
+version = "{self.version}"
 
 [requirements]
 # list of plugin names with ids. DO NOT REMOVE HOST
