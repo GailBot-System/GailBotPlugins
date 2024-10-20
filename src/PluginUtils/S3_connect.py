@@ -52,13 +52,13 @@ class S3Client:
                     if plugin_info:
                         plugin_id = plugin_info["id"]
 
-                if plugin_id:
-                    s3_key = f"{folder_type}/{plugin_id}/{file_name}"
-                    self.s3_client.upload_file(file_path, bucket, s3_key)
-                    print(f"File {file_path} uploaded to {bucket}/{s3_key}")
-                else:
-                    print("Plugin ID not found in TOML file. Aborting upload.")
-                    return
+                    if not plugin_id:
+                        print("Plugin ID not found in TOML file. Aborting upload.")
+                        return
+            for file_name in os.listdir(folder):
+                s3_key = f"{folder_type}/{plugin_id}/{file_name}"
+                self.s3_client.upload_file(file_path, bucket, s3_key)
+                print(f"File {file_path} uploaded to {bucket}/{s3_key}")
         except FileNotFoundError:
             print(f"The file was not found")
         except NoCredentialsError:
@@ -73,18 +73,26 @@ class S3Client:
                 config = toml.load(f)
                 if is_suite:
                     item_info = {
-                        "id": config["suite"]["id"],
-                        "name": config["suite"]["name"],
-                        "description": config["suite"].get("description", ""),
-                        "version": config["suite"]["version"],
-                        "plugins_list": config["suite"].get("plugins", [])
+                        "id": config.get("suite", {}).get("id"),
+                        "name": config.get("suite", {}).get("name"),
+                        "description": config.get("suite", {}).get("description"),
+                        # "created_by": config["suite"]["created_by"],
+                        # "access": config["suite"].get("access", "ANY"),
                     }
                 else:
+                    # item_info = {
+                    #     "id": config["plugin"]["id"],
+                    #     "name": config["plugin"]["name"],
+                    #     "description": config["plugin"].get("description", ""),
+                    #     "created_by": config["plugin"]["created_by"],
+                    #     "access": config["plugin"].get("access", "ANY"),
+                    # }
                     item_info = {
-                        "id": config["plugin"]["id"],
-                        "name": config["plugin"]["name"],
-                        "description": config["plugin"].get("description", ""),
-                        "version": config["plugin"].get("version", ""),
+                        "id": config.get("plugin", {}).get("id"),
+                        "name": config.get("plugin", {}).get("name"),
+                        "description": config.get("plugin", {}).get("description"),
+                        # "created_by": config.get("package", {}).get("authors"),
+                        # "access": config.get("package", {}).get("access"),
                     }
                 return item_info
         except FileNotFoundError:
