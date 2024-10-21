@@ -12,7 +12,6 @@ from WorkspaceManager.manager import WorkspaceManager
 
 # USER = "danbergen"
 USER = os.getlogin()
-print("user is ", USER)
 HOST = "0"
 
 class PluginSuiteTool:
@@ -28,8 +27,6 @@ class PluginSuiteTool:
     def __init__(self, name: str) -> None:
         self.plugin_list = dict()
         self.name =  name
-
-        # TODO: Can't remove ID 0
         self.add_plugin(HOST)
     
     def add_plugin(self, id: str) -> None:
@@ -40,14 +37,13 @@ class PluginSuiteTool:
         id : str
             Corresponding ID of zipped file
         """
-        if (id == '0'):
-            return
+
         try:
             # TODO: when implementing API calls when host is retrieved pull from local copy rather than API
             plugin_conf_file = self._retrieve_plugin_conf(id)
-            plugin = Plugin(plugin_conf_file)
-            self.plugin_list[plugin.id] = plugin
-            print(f"Plugin {plugin.id} added.")
+            plugin = Plugin(toml_file= plugin_conf_file, id= id)
+            self.plugin_list[id] = plugin
+            print(f"Plugin {id} added.")
         except Exception as e:
             print(e)
 
@@ -67,24 +63,36 @@ class PluginSuiteTool:
             String containing file info
         """
         if id == HOST:
-            file_path = f"/Users/{USER}/Desktop/GailBot/GailBotTools/src/playground/plugin_info.toml"
+            file_path = f"/Users/{USER}/Desktop/GailBot/GailBotPlugins/src/playground/plugin_info.toml"
             with open(file_path, 'r') as file:
                 file_contents = file.read()
+            return file_contents
+        elif id == "71":
+            file_path = f"/Users/{USER}/Desktop/name/plugin_info.toml"
+            with open(file_path, 'r') as file:
+                file_contents = file.read()
+            return file_contents
+        elif id == "74":
+            file_path = f"/Users/{USER}/Desktop/name2/plugin_info.toml"
+            with open(file_path, 'r') as file:
+                file_contents = file.read()
+            return file_contents
+        else:
 
-        # get s3_url from RDS
-        rds_client = RDSClient()
-        rds_client.connect()
-        s3_url = rds_client.fetch_plugin_s3_url(id)
-        rds_client.close_connection()
+            # get s3_url from RDS
+            rds_client = RDSClient()
+            rds_client.connect()
+            s3_url = rds_client.fetch_plugin_s3_url(id)
+            rds_client.close_connection()
 
-        # use s3_url to get plugin toml file
-        base_url = "https://gailbot-plugins.s3.us-east-2.amazonaws.com/plugins/"
-        bucket = "gailbot-plugins"
-        key = s3_url.replace(base_url, "")
+            # use s3_url to get plugin toml file
+            base_url = "https://gailbot-plugins.s3.us-east-2.amazonaws.com/plugins/"
+            bucket = "gailbot-plugins"
+            key = s3_url.replace(base_url, "")
 
-        s3_client = S3Client()
-        return s3_client.download_plugin_conf(bucket, key)
-        
+            s3_client = S3Client()
+            return s3_client.download_plugin_conf(bucket, key)
+            
     def remove_plugin(self, id: str) -> None:
         """
         Removed plugin from plugin suite
@@ -219,11 +227,11 @@ class PluginSuiteTool:
             User specific workspace that stores all the docker files and plugins
         """
         services = {}
+        print("plugin list is ", self.plugin_list)
         
-        # TODO transfer to workspace manager
-        plugin_folder = f"/Users/{USER}/GailBot/gailbot_workspace/gailbot_data/plugin_source/suites/{self.name}/plugins"
-        docker_folder = f"/Users/{USER}/GailBot/gailbot_workspace/gailbot_data/plugin_source/suites/{self.name}/docker"        
-        
+        plugin_folder = os.path.join(workspace.ps_path, self.name, "plugins")
+        docker_folder = os.path.join(workspace.ps_path, self.name, "docker")
+
         for i, plugin_id in enumerate(order):
             services[f'plugin_{plugin_id}'] = {
                 # building docker images from docker files automatically
@@ -231,7 +239,9 @@ class PluginSuiteTool:
                     "context": f"{plugin_folder}/{plugin_id}",
                     "dockerfile": f"{docker_folder}/{plugin_id}"
                 },
-                'depends_on': [f'plugin_{id}' for _, id in self.plugin_list[plugin_id].requirements.items()],
+                'depends_on': [] if plugin_id == HOST else [
+                    f'plugin_{req_id}' for _, req_id in self.plugin_list[plugin_id].requirements.items()
+                ],
                 "networks": ["gailbot"]
             }
             # define a location where the transcripts will be stored so the container can access later o

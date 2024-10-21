@@ -28,7 +28,7 @@ class Plugin:
         Other additional plugin requirements
     """
 
-    def __init__(self, toml_file: str) -> None:
+    def __init__(self, toml_file: str, id: str) -> None:
         """
         Initialize a plugin from a toml file
 
@@ -37,10 +37,9 @@ class Plugin:
                 Path to the toml file that contains the necessary information to populate the plugin attributes
         """
         # TODO: check formatting in toml file
-        print("yay")
         self._info_dict = toml.loads(toml_file)
         print("1")
-        self.id = self._info_dict["plugin"]["id"]
+        self.id = id
         print("2")
         self.dependencies = self._info_dict["dependencies"]
         print("3")
