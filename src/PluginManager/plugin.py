@@ -42,9 +42,7 @@ class Plugin:
         self.id = id
         print("2")
         self.dependencies = self._info_dict["dependencies"]
-        print("3")
         self.requirements = self._info_dict["requirements"]
-        print(self.requirements)
 
     def _unzip(self, file):
         unzipped_dir = os.path.splitext(file)[0]
