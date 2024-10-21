@@ -1,0 +1,13 @@
+[plugin]
+name = "host"
+id = "0"
+version = "0.1.0"
+description = "Important Plugin for transcription"
+authors = ["Prof Pedantic <prof.pedantic@tufts.edu>"]
+
+[requirements]
+# list of plugin names with ids
+
+
+[dependencies]
+# list of python dependencies with versions

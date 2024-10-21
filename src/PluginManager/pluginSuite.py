@@ -11,7 +11,8 @@ from PluginUtils.RDS_connect import RDSClient
 from WorkspaceManager.manager import WorkspaceManager
 
 # USER = "danbergen"
-USER = "sophieclemens"
+USER = os.getlogin()
+print("user is ", USER)
 HOST = "0"
 
 class PluginSuiteTool:
@@ -65,6 +66,10 @@ class PluginSuiteTool:
         Returns:
             String containing file info
         """
+        if id == HOST:
+            file_path = f"/Users/{USER}/Desktop/GailBot/GailBotTools/src/playground/plugin_info.toml"
+            with open(file_path, 'r') as file:
+                file_contents = file.read()
 
         # get s3_url from RDS
         rds_client = RDSClient()

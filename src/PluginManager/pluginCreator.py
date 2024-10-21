@@ -13,9 +13,9 @@ class pluginCreator():
         self.parent_dir = os.path.join(self.desktop, self.name)
         if not is_directory(self.parent_dir):
             os.makedirs(self.parent_dir)
-        self.src_dir = os.path.join(self.parent_dir, "src")
-        if not is_directory(self.src_dir):
-            os.makedirs(self.src_dir)
+        # self.src_dir = os.path.join(self.parent_dir, "src")
+        # if not is_directory(self.src_dir):
+        #     os.makedirs(self.src_dir)
         self.add_files()
 
 
@@ -32,7 +32,7 @@ class pluginCreator():
         # utils_path  = os.path.join(self.src_dir, "utils.py")
         # app_path  = os.path.join(self.src_dir, "app.py")
         file_dict = {
-            "clients.py" : self.get_client_code(),
+            "client.py" : self.get_client_code(),
             "utils.py" : self.get_utils_code(),
             "README" : self.get_readme_text(),
             "plugin_info.toml" : self.get_toml_text(),
@@ -40,8 +40,8 @@ class pluginCreator():
         }
 
         for name, text in file_dict.items():
-            head_dir = self.src_dir if name.endswith('.py') else self.parent_dir
-            self.create_and_write_to_file(text= text, name= name, head_dir= head_dir)
+            # head_dir = self.src_dir if name.endswith('.py') else self.parent_dir
+            self.create_and_write_to_file(text= text, name= name, head_dir= self.parent_dir)
 
 
     def create_and_write_to_file(self, text: str, head_dir: str, name: str):
