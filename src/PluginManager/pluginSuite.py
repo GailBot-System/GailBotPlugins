@@ -11,7 +11,7 @@ from PluginUtils.RDS_connect import RDSClient
 from WorkspaceManager.manager import WorkspaceManager
 
 # USER = "danbergen"
-USER = "sophieclemens"
+# USER = "sophieclemens"
 HOST = "0"
 
 class PluginSuiteTool:

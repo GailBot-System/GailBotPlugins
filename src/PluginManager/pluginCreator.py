@@ -32,7 +32,7 @@ class pluginCreator():
         # utils_path  = os.path.join(self.src_dir, "utils.py")
         # app_path  = os.path.join(self.src_dir, "app.py")
         file_dict = {
-            "clients.py" : self.get_client_code(),
+            "client.py" : self.get_client_code(),
             "utils.py" : self.get_utils_code(),
             "README" : self.get_readme_text(),
             "plugin_info.toml" : self.get_toml_text(),
